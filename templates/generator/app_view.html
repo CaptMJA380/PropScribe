@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="padding:2rem 0 1.5rem; animation: fadeUp .5s ease both;">
+    <div style="display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:.75rem">
+        <span style="width:20px;height:1.5px;background:var(--gold);display:inline-block;border-radius:1px"></span>
+        Welcome back, {{ user.first_name|default:user.username }}
+    </div>
+    <div style="font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,3.5vw,2.8rem);font-weight:600;color:var(--text_p);line-height:1.1;letter-spacing:-.02em;margin-bottom:.65rem">
+        Generate your listing.
+    </div>
+    <div style="font-size:14px;color:var(--text_s);line-height:1.6">
+        Fill in the details below — your professional listing is ready in ~10 seconds.
+    </div>
+</div>
+
+<hr style="border:none;border-top:1px solid var(--border);margin:0 0 1.5rem">
+
+<form method="POST" action="{% url 'generator:app_view' %}" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div style="display:flex; gap:3rem;">
+        <div style="flex:1;">
+            <div style="font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--text_m);margin-bottom:1rem;padding-bottom:.5rem;border-bottom:1px solid var(--border);">
+                🏠 Property Details
+            </div>
+            <div style="margin-bottom:1.5rem;">
+                <label style="color:var(--text_s);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;display:block;margin-bottom:8px;">Property type</label>
+                <select name="prop_type" style="width:100%;background:var(--elevated);border:1px solid var(--border_l);border-radius:10px;color:var(--text_p);font-size:14px;padding:0.65rem 0.9rem;outline:none;-webkit-appearance:none;">
+                    <option>2BHK Flat</option><option>3BHK Flat</option><option>1BHK Flat</option><option>4BHK Flat</option>
+                    <option>Villa / Bungalow</option><option>Row House</option><option>Plot</option><option>Commercial Office</option>
+                </select>
+            </div>
+            <div style="display:flex;gap:1.5rem;margin-bottom:1.5rem;">
+                <div style="flex:1;">
+                    <label style="color:var(--text_s);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;display:block;margin-bottom:8px;">Area (sqft)</label>
+                    <input type="text" name="area" placeholder="e.g. 950" style="width:100%;background:var(--elevated);border:1px solid var(--border_l);border-radius:10px;color:var(--text_p);font-size:14px;padding:0.65rem 0.9rem;outline:none;" required>
+                </div>
+                <div style="flex:1;">
+                    <label style="color:var(--text_s);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;display:block;margin-bottom:8px;">Floor</label>
+                    <input type="text" name="floor" placeholder="e.g. 4th of 8" style="width:100%;background:var(--elevated);border:1px solid var(--border_l);border-radius:10px;color:var(--text_p);font-size:14px;padding:0.65rem 0.9rem;outline:none;">
+                </div>
+            </div>
+            <div style="margin-bottom:1.5rem;">
+                <label style="color:var(--text_s);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;display:block;margin-bottom:8px;">Location</label>
+                <input type="text" name="location" placeholder="e.g. Baner, Pune" style="width:100%;background:var(--elevated);border:1px solid var(--border_l);border-radius:10px;color:var(--text_p);font-size:14px;padding:0.65rem 0.9rem;outline:none;" required>
+            </div>
+        </div>
+        
+        <div style="flex:1;">
+            <div style="font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--text_m);margin-bottom:1rem;padding-bottom:.5rem;border-bottom:1px solid var(--border);">
+                💰 Pricing & Features
+            </div>
+            <div style="margin-bottom:1.5rem;">
+                <label style="color:var(--text_s);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;display:block;margin-bottom:8px;">Price / Rent</label>
+                <input type="text" name="price" placeholder="e.g. 85 lakhs or 25,000/mo" style="width:100%;background:var(--elevated);border:1px solid var(--border_l);border-radius:10px;color:var(--text_p);font-size:14px;padding:0.65rem 0.9rem;outline:none;" required>
+            </div>
+            <div style="display:flex;gap:1.5rem;margin-bottom:1.5rem;">
+                <div style="flex:1;">
+                    <label style="color:var(--text_s);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;display:block;margin-bottom:8px;">Facing</label>
+                    <select name="facing" style="width:100%;background:var(--elevated);border:1px solid var(--border_l);border-radius:10px;color:var(--text_p);font-size:14px;padding:0.65rem 0.9rem;outline:none;-webkit-appearance:none;">
+                        <option>East</option><option>West</option><option>North</option><option>South</option>
+                        <option>North-East</option><option>North-West</option><option>South-East</option><option>Not sure</option>
+                    </select>
+                </div>
+                <div style="flex:1;">
+                    <label style="color:var(--text_s);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;display:block;margin-bottom:8px;">Language</label>
+                    <select name="language" style="width:100%;background:var(--elevated);border:1px solid var(--border_l);border-radius:10px;color:var(--text_p);font-size:14px;padding:0.65rem 0.9rem;outline:none;-webkit-appearance:none;">
+                        <option>English</option><option>Hindi</option><option>Marathi</option>
+                    </select>
+                </div>
+            </div>
+            <div style="margin-bottom:1.5rem;">
+                <label style="color:var(--text_s);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;display:block;margin-bottom:8px;">Amenities (multiple)</label>
+                <select name="amenities" multiple style="width:100%;height:100px;background:var(--elevated);border:1px solid var(--border_l);border-radius:10px;color:var(--text_p);font-size:14px;padding:0.65rem 0.9rem;outline:none;">
+                    {% for amenity in amenities_list %}
+                    <option value="{{ amenity }}">{{ amenity }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:1.25rem 0">
+    <div style="font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--text_m);margin-bottom:1rem;padding-bottom:.5rem;border-bottom:1px solid var(--border);">
+        📷 Property Photo — Optional
+    </div>
+    <div style="margin-bottom: 2rem;">
+        <div style="font-size:12px;color:var(--text_m);margin-bottom:.75rem;line-height:1.65">
+            Upload a property photo and AI will describe flooring, lighting, fixtures and weave those details into your listing automatically.
+        </div>
+        <input type="file" name="photo" accept="image/*" style="width:100%;background:var(--elevated);border:1px dashed rgba(201,163,72,0.4);border-radius:14px;padding:1.25rem;color:var(--text_s); cursor:pointer;">
+    </div>
+
+    <button type="submit" class="btn-primary" style="width:100%; max-width: 300px;">⚡ Generate Listing</button>
+</form>
+
+{% if result %}
+<div style="margin-top: 3rem; background: var(--elevated); border: 1px solid var(--border_l); border-radius: 12px; padding: 2rem;">
+    <h3 style="color:var(--succ); margin-top:0;">Listing Generated Successfully!</h3>
+    
+    <div style="margin-top: 2rem;">
+        <h4 style="color: var(--gold); margin-bottom: 0.5rem; font-size: 13px; text-transform: uppercase;">Full Listing (99acres, MagicBricks)</h4>
+        <textarea readonly style="width:100%;height:200px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text_p);padding:1rem;font-size:13.5px;">{{ full_listing }}</textarea>
+    </div>
+    
+    <div style="margin-top: 2rem;">
+        <h4 style="color: var(--gold); margin-bottom: 0.5rem; font-size: 13px; text-transform: uppercase;">WhatsApp Message</h4>
+        <textarea readonly style="width:100%;height:120px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text_p);padding:1rem;font-size:13.5px;">{{ whatsapp_msg }}</textarea>
+    </div>
+
+    <div style="margin-top: 2rem;">
+        <h4 style="color: var(--gold); margin-bottom: 0.5rem; font-size: 13px; text-transform: uppercase;">Email Template</h4>
+        <textarea readonly style="width:100%;height:200px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text_p);padding:1rem;font-size:13.5px;">{{ email_template }}</textarea>
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}

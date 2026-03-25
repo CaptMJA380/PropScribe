@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="padding:3.5rem 0;text-align:center;">
+    <div style="display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:1.25rem;">
+        <span style="width:22px;height:1px;background:var(--gold);display:inline-block"></span>
+        Free Tier Complete
+        <span style="width:22px;height:1px;background:var(--gold);display:inline-block"></span>
+    </div>
+    
+    <div style="font-family:'Cormorant Garamond',serif;font-size:2.5rem;font-weight:600;color:var(--text_p);line-height:1.2;letter-spacing:-.02em;margin-bottom:1rem;">
+        You've used all 3 free listings.
+    </div>
+    
+    <div style="font-size:15px;color:var(--text_s);max-width:480px;margin:0 auto 2rem;line-height:1.65;">
+        Upgrade to Pro for unlimited listings across all three languages.
+    </div>
+    
+    <div style="display:flex;align-items:baseline;gap:8px;justify-content:center;margin-bottom:2rem;">
+        <span style="font-family:'Cormorant Garamond',serif;font-size:3.2rem;font-weight:700;color:var(--gold);">&#x20B9;499</span>
+        <span style="font-size:14px;color:var(--text_m);">/month &middot; launch price</span>
+        <span style="font-size:13px;color:var(--text_m);text-decoration:line-through;">&#x20B9;999</span>
+    </div>
+    
+    <a href="#" style="display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,var(--gold),var(--gold_lt));color:#080810;font-family:'Inter',sans-serif;font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;padding:14px 36px;border-radius:10px;box-shadow:0 6px 28px rgba(201,163,72,0.4);">
+        Upgrade to Pro →
+    </a>
+</div>
+{% endblock %}

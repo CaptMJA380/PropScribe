@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="text-align: center; margin-top: 4rem;">
+    <div style="display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);background:var(--icon_bg);border:1px solid rgba(201,163,72,0.28);border-radius:100px;padding:5px 13px;margin-bottom:1.25rem;">
+        <span style="width:6px;height:6px;border-radius:50%;background:var(--gold);"></span> AI-Powered Property Listings
+    </div>
+    
+    <h1 style="font-family:'Cormorant Garamond',serif;font-size:clamp(2.9rem,5.8vw,5.5rem);font-weight:600;line-height:1.07;color:var(--text_p);letter-spacing:-.025em;margin:0 0 1.4rem;">
+        List any property<br><em style="font-style:italic;color:var(--gold_lt)">in 10 seconds.</em>
+    </h1>
+    
+    <p style="font-size:17px;color:var(--text_s);line-height:1.68;max-width:520px;margin:0 auto 2.4rem;font-weight:300;">
+        Professional listings for 99acres, MagicBricks &amp; WhatsApp.<br>
+        In English, Hindi, or Marathi — built for Indian real estate agents.
+    </p>
+    
+    <div style="display:flex;align-items:center;justify-content:center;gap:12px;margin-top:2.4rem;flex-wrap:wrap;">
+        <a href="{% url 'accounts:register' %}" class="btn-primary">Get Started Free →</a>
+        <a href="{% url 'accounts:login' %}" class="btn-secondary">Sign In</a>
+    </div>
+
+    <div style="display:flex;gap:3rem;justify-content:center;margin-top:4rem;padding-top:2rem;border-top:1px solid var(--border);">
+        <div style="text-align:left;">
+            <div style="font-family:'Cormorant Garamond',serif;font-size:2.3rem;font-weight:700;color:var(--text_p);line-height:1;margin-bottom:5px;">500+</div>
+            <div style="font-size:10px;color:var(--text_m);text-transform:uppercase;letter-spacing:.13em;">Active Agents</div>
+        </div>
+        <div style="text-align:left;">
+            <div style="font-family:'Cormorant Garamond',serif;font-size:2.3rem;font-weight:700;color:var(--text_p);line-height:1;margin-bottom:5px;">10K+</div>
+            <div style="font-size:10px;color:var(--text_m);text-transform:uppercase;letter-spacing:.13em;">Listings Made</div>
+        </div>
+        <div style="text-align:left;">
+            <div style="font-family:'Cormorant Garamond',serif;font-size:2.3rem;font-weight:700;color:var(--text_p);line-height:1;margin-bottom:5px;">3</div>
+            <div style="font-size:10px;color:var(--text_m);text-transform:uppercase;letter-spacing:.13em;">Languages</div>
+        </div>
+        <div style="text-align:left;">
+            <div style="font-family:'Cormorant Garamond',serif;font-size:2.3rem;font-weight:700;color:var(--text_p);line-height:1;margin-bottom:5px;">~10s</div>
+            <div style="font-size:10px;color:var(--text_m);text-transform:uppercase;letter-spacing:.13em;">Avg. Time</div>
+        </div>
+    </div>
+</div>
+{% endblock %}

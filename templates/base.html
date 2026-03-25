@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}PropScribe AI{% endblock %}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <style>
+        :root {
+            /* Light mode default */
+            --bg: #F5F2EC;
+            --surface: #FFFFFF;
+            --elevated: #EDEAE2;
+            --card_bg: rgba(255,255,255,0.97);
+            --border: rgba(0,0,0,0.09);
+            --border_l: rgba(0,0,0,0.15);
+            --gold: #9F7625;
+            --gold_lt: #B8892E;
+            --gold_glow: rgba(159,118,37,0.08);
+            --text_p: #1A1A2E;
+            --text_s: #4A4A68;
+            --text_m: #8A8A9E;
+            --icon_bg: rgba(159,118,37,0.08);
+            --sidebar_bg: #FFFFFF;
+            --sidebar_border: rgba(0,0,0,0.07);
+            --succ: #3ECF8E;
+            --err: #F87171;
+        }
+        [data-theme="dark"] {
+            /* Dark mode */
+            --bg: #080810;
+            --surface: #0F0F1A;
+            --elevated: #161625;
+            --card_bg: rgba(22,22,37,0.94);
+            --border: rgba(255,255,255,0.07);
+            --border_l: rgba(255,255,255,0.12);
+            --gold: #C9A348;
+            --gold_lt: #E8C56A;
+            --gold_glow: rgba(201,163,72,0.11);
+            --text_p: #F2EDE0;
+            --text_s: #9A9AAE;
+            --text_m: #4A4A60;
+            --icon_bg: rgba(201,163,72,0.1);
+            --sidebar_bg: #0A0A14;
+            --sidebar_border: rgba(255,255,255,0.05);
+            --succ: #3ECF8E;
+            --err: #F87171;
+        }
+        body {
+            background-color: transparent;
+            color: var(--text_p);
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            min-height: 100vh;
+            position: relative;
+        }
+        #bg-video {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            transform: translateX(-50%) translateY(-50%);
+            z-index: -2;
+            object-fit: cover;
+            pointer-events: none;
+        }
+        /* Crucial block to hide Safari's built-in large play button over videos */
+        video::-webkit-media-controls {
+            display: none !important;
+        }
+        video::-webkit-media-controls-start-playback-button {
+            display: none !important;
+        }
+        #bg-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            background-color: var(--bg);
+            opacity: 0.90; /* 90% opacity to let video barely show through, keeping text legible */
+        }
+        .sidebar {
+            width: 280px;
+            background-color: var(--sidebar_bg);
+            border-right: 1px solid var(--sidebar_border);
+            padding: 1.75rem 1.25rem;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+        }
+        .main-content {
+            flex: 1;
+            padding: 2rem 2.5rem 4rem;
+            max-width: 1140px;
+            margin: 0 auto;
+        }
+        a {
+            color: var(--gold);
+            text-decoration: none;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--gold), var(--gold_lt));
+            color: #080810;
+            border: none;
+            border-radius: 10px;
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            padding: 0.75rem 1.5rem;
+            box-shadow: 0 4px 20px rgba(201,163,72,0.4);
+            transition: all 0.22s;
+            cursor: pointer;
+            text-align: center;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(201,163,72,0.55);
+        }
+        .btn-secondary {
+            background: transparent;
+            color: var(--text_s);
+            border: 1px solid var(--border_l);
+            border-radius: 10px;
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.22s;
+            cursor: pointer;
+            padding: 0.75rem 1.5rem;
+            text-align: center;
+        }
+        .btn-secondary:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+        .messages {
+            margin-bottom: 2rem;
+        }
+        .message.error {
+            background: rgba(248,113,113,0.1);
+            border-left: 3px solid var(--err);
+            border-radius: 8px;
+            padding: 10px 14px;
+            margin-bottom: 8px;
+            font-size: 13px;
+            color: var(--err);
+        }
+        hr {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 1.5rem 0;
+        }
+    </style>
+    <script>
+        const currentTheme = localStorage.getItem("theme") || "light";
+        document.documentElement.setAttribute('data-theme', currentTheme);
+    </script>
+</head>
+<body>
+    <!-- Background Video -->
+    <video autoplay muted loop playsinline id="bg-video">
+        <source src="{% static 'videos/bg_video.mp4' %}" type="video/mp4">
+    </video>
+    <div id="bg-overlay"></div>
+
+    <!-- Theme Toggle Button -->
+    <button id="themeToggleBtn" style="position: absolute; top: 1.5rem; right: 2rem; z-index: 1000; background: var(--elevated); border: 1px solid var(--border_l); border-radius: 50%; width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--text_p); font-size: 18px; transition: all 0.2s;">
+        <span id="themeIcon"></span>
+    </button>
+
+    {% if user.is_authenticated %}
+    <div class="sidebar">
+        <div style="margin-bottom:.5rem;padding-bottom:.75rem;border-bottom:1px solid var(--border)">
+            <span style="font-family:'Cormorant Garamond',Georgia,serif;font-size:22px;font-weight:600;color:var(--text_p)">PropScribe</span>
+            <span style="font-family:'Cormorant Garamond',Georgia,serif;font-size:22px;font-weight:400;color:var(--gold)"> AI</span>
+            <div style="font-size:9px;color:var(--text_m);letter-spacing:.12em;text-transform:uppercase;margin-top:2px">
+                Property Listing Generator
+            </div>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:10px;background:var(--card_bg);border:1px solid var(--border);border-radius:12px;padding:10px 12px;margin-bottom:8px">
+            <div style="width:36px;height:36px;border-radius:50%;background:var(--icon_bg);border:1px solid var(--gold_glow);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;color:var(--gold);flex-shrink:0">
+                {{ user.username|title|slice:":2" }}
+            </div>
+            <div style="overflow:hidden;flex:1">
+                <div style="font-size:13px;font-weight:500;color:var(--text_p);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ user.first_name|default:user.username }}</div>
+                <div style="font-size:11px;color:var(--text_m);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ user.email }}</div>
+            </div>
+        </div>
+        
+        <div style="margin-top: auto;">
+            <a href="{% url 'accounts:logout' %}" class="btn-secondary" style="display: block; width: 100%; box-sizing: border-box;">Sign Out</a>
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="main-content">
+        {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+            <div class="message {{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    <script>
+        const themeToggleBtn = document.getElementById('themeToggleBtn');
+        const themeIcon = document.getElementById('themeIcon');
+        
+        function updateIcon(theme) {
+            themeIcon.innerHTML = theme === 'dark' ? '☀️' : '🌙';
+        }
+        
+        updateIcon(document.documentElement.getAttribute('data-theme'));
+        
+        themeToggleBtn.addEventListener('click', () => {
+            let theme = document.documentElement.getAttribute('data-theme');
+            let switchToTheme = theme === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', switchToTheme);
+            localStorage.setItem('theme', switchToTheme);
+            updateIcon(switchToTheme);
+        });
+
+        // Force video autoplay in Safari/iOS
+        document.addEventListener('DOMContentLoaded', function() {
+            var video = document.getElementById('bg-video');
+            if (video) {
+                video.muted = true;
+                video.setAttribute('playsinline', '');
+                var playPromise = video.play();
+                if (playPromise !== undefined) {
+                    playPromise.catch(function(error) {
+                        console.log("Autoplay was prevented by browser.", error);
+                    });
+                }
+            }
+        });
+    </script>
+</body>
+</html>
